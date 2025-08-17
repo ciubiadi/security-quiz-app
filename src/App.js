@@ -2044,7 +2044,7 @@ function App() {
                 className="btn-action btn-danger"
               >
                 <RotateCcw size={16} />
-                Resetează
+                Resetează Testul ( Începe din nou )
               </button>
             </div>
           </div>
