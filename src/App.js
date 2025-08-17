@@ -1992,10 +1992,10 @@ function App() {
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Security Risk Evaluator Quiz</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Test de evaluare Evaluator Risc securitate fizică</h1>
         <div className="flex items-center gap-4">
           <span className="text-sm text-gray-600">
-            Score: {score}/{totalAnswered}
+            Scor: {score}/{totalAnswered}
           </span>
           <button
             onClick={shuffleQuestions}
@@ -2017,7 +2017,7 @@ function App() {
       {/* Progress */}
       <div className="mb-6">
         <div className="flex justify-between text-sm text-gray-600 mb-2">
-          <span>Question {currentQuestionIndex + 1} of {randomizedQuestions.length}</span>
+          <span>Întrebarea {currentQuestionIndex + 1} din {randomizedQuestions.length}</span>
           <span>{Math.round(((currentQuestionIndex + 1) / randomizedQuestions.length) * 100)}% Completat</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2">
