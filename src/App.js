@@ -2114,7 +2114,7 @@ function App() {
               : 'bg-gray-600 text-white hover:bg-gray-700'
           }`}
         >
-          Previous
+          Întrebarea precedenta ( Înapoi )
         </button>
 
         <div className="flex gap-2">
@@ -2123,7 +2123,7 @@ function App() {
               onClick={checkAnswer}
               className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Check Answer
+              Verifică Răspuns ( Răspunde )
             </button>
           )}
         </div>
@@ -2137,7 +2137,7 @@ function App() {
               : 'bg-gray-600 text-white hover:bg-gray-700'
           }`}
         >
-          Next
+          Următoarea întrebare
         </button>
       </div>
 
