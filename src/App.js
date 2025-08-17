@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Shuffle, CheckCircle, XCircle, RotateCcw, Play } from 'lucide-react';
+import { CheckCircle, XCircle, Play, Shuffle, RotateCcw, Check, Square } from 'lucide-react';
 import './App.css';
-
-function App() {
   const questions = [
     {
       id: 1,
@@ -1859,9 +1857,9 @@ function App() {
       correct: ["a", "b", "c"]
     }
   ];
-
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+function App() {
   const [randomizedQuestions, setRandomizedQuestions] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState({});
   const [showResult, setShowResult] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
@@ -1943,39 +1941,63 @@ function App() {
   };
 
   if (randomizedQuestions.length === 0) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>;
+    return (
+      <div className="loading-container">
+        <div className="loading-text">Se încarcă testul...</div>
+      </div>
+    );
   }
 
   if (!quizStarted) {
     return (
-      <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            Test de evaluare a riscurilor de securitate fizică Risc Evaluator
-          </h1>
-          <p className="text-gray-600 mb-6">
-            Testează-ți cunoștințele cu 90 de întrebări despre evaluarea riscurilor de securitate fizică.
-            Întrebările sunt randomizate pentru fiecare sesiune.
-          </p>
-          <div className="space-y-4">
-            <button
-              onClick={startQuiz}
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 mx-auto"
-            >
-              <Play size={20} />
-              Începeți testul
-            </button>
-            <button
-              onClick={shuffleQuestions}
-              className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center gap-2 mx-auto"
-            >
-              <Shuffle size={16} />
-              Amestecă Întrebările
-            </button>
+      <div className="welcome-screen">
+        <div className="welcome-card">
+          <div className="welcome-header">
+            <h1 className="welcome-title">
+              Test de Evaluare
+            </h1>
+            <p className="welcome-subtitle">
+              Securitate Fizică - Evaluator Risc
+            </p>
           </div>
-          <div className="mt-6 text-sm text-gray-500">
-            <p>Nr. Total Întrebări: {questions.length}</p>
-            <p>Formatul răspunsului: Alegere multiplă (unele întrebări pot avea mai multe răspunsuri corecte)</p>
+          
+          <div className="welcome-content">
+            <p className="welcome-description">
+              Testează-ți cunoștințele cu {questions.length} întrebări despre evaluarea 
+              riscurilor de securitate fizică. Întrebările sunt randomizate pentru fiecare sesiune.
+            </p>
+            
+            <div className="welcome-buttons">
+              <button
+                onClick={startQuiz}
+                className="btn-primary btn-large"
+              >
+                <Play size={24} />
+                Începeți Testul
+              </button>
+              
+              <button
+                onClick={shuffleQuestions}
+                className="btn-secondary"
+              >
+                <Shuffle size={18} />
+                Amestecă Întrebările
+              </button>
+            </div>
+            
+            <div className="welcome-info">
+              <div className="info-grid">
+                <div>
+                  <span className="info-label">Total întrebări:</span> {questions.length}
+                </div>
+                <div>
+                  <span className="info-label">Tip:</span> Alegere multiplă
+                </div>
+              </div>
+              <p className="info-note">
+                Unele întrebări pot avea mai multe răspunsuri corecte
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -1989,168 +2011,223 @@ function App() {
                    userAnswer.every(ans => correctAnswer.includes(ans));
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Test de evaluare Evaluator Risc securitate fizică</h1>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-600">
-            Scor: {score}/{totalAnswered}
-          </span>
-          <button
-            onClick={shuffleQuestions}
-            className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center gap-2"
-          >
-            <Shuffle size={16} />
-            Amestecă
-          </button>
-          <button
-            onClick={resetQuiz}
-            className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2"
-          >
-            <RotateCcw size={16} />
-            Resetează Întrebările ( începe din nou )
-          </button>
-        </div>
-      </div>
-
-      {/* Progress */}
-      <div className="mb-6">
-        <div className="flex justify-between text-sm text-gray-600 mb-2">
-          <span>Întrebarea {currentQuestionIndex + 1} din {randomizedQuestions.length}</span>
-          <span>{Math.round(((currentQuestionIndex + 1) / randomizedQuestions.length) * 100)}% Completat</span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div 
-            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${((currentQuestionIndex + 1) / randomizedQuestions.length) * 100}%` }}
-          ></div>
-        </div>
-      </div>
-
-      {/* Question */}
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">
-          {currentQuestion.question}
-        </h2>
-
-        {/* Options */}
-        <div className="space-y-3">
-          {Object.entries(currentQuestion.options).map(([key, value]) => {
-            const isSelected = userAnswer.includes(key);
-            const isCorrectOption = correctAnswer.includes(key);
-            
-            let optionClass = "p-4 border rounded-lg cursor-pointer transition-all ";
-            
-            if (showResult) {
-              if (isCorrectOption) {
-                optionClass += "border-green-500 bg-green-50 text-green-800";
-              } else if (isSelected && !isCorrectOption) {
-                optionClass += "border-red-500 bg-red-50 text-red-800";
-              } else {
-                optionClass += "border-gray-300 bg-gray-50 text-gray-600";
-              }
-            } else {
-              if (isSelected) {
-                optionClass += "border-blue-500 bg-blue-50 text-blue-800";
-              } else {
-                optionClass += "border-gray-300 hover:border-blue-300 hover:bg-blue-50";
-              }
-            }
-
-            return (
-              <div
-                key={key}
-                className={optionClass}
-                onClick={() => !showResult && handleAnswerToggle(key)}
-              >
-                <div className="flex items-start gap-3">
-                  <span className="font-semibold text-sm mt-0.5">
-                    {key.toUpperCase()})
-                  </span>
-                  <span className="flex-1">{value}</span>
-                  {showResult && isCorrectOption && (
-                    <CheckCircle size={20} className="text-green-600 flex-shrink-0" />
-                  )}
-                  {showResult && isSelected && !isCorrectOption && (
-                    <XCircle size={20} className="text-red-600 flex-shrink-0" />
-                  )}
-                </div>
+    <div className="quiz-container">
+      <div className="quiz-wrapper">
+        
+        {/* Header */}
+        <div className="quiz-header">
+          <div className="header-content">
+            <div className="header-info">
+              <h1 className="quiz-title">
+                Test Evaluator Risc Securitate Fizică
+              </h1>
+              <div className="header-stats">
+                <span className="score-badge">
+                  Scor: {score}/{totalAnswered}
+                </span>
+                <span className="progress-text">
+                  Progres: {Math.round(((currentQuestionIndex + 1) / randomizedQuestions.length) * 100)}%
+                </span>
               </div>
-            );
-          })}
+            </div>
+            
+            <div className="header-actions">
+              <button
+                onClick={shuffleQuestions}
+                className="btn-action"
+              >
+                <Shuffle size={16} />
+                Amestecă
+              </button>
+              <button
+                onClick={resetQuiz}
+                className="btn-action btn-danger"
+              >
+                <RotateCcw size={16} />
+                Resetează
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Result Display */}
-      {showResult && (
-        <div className={`p-4 rounded-lg mb-6 ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
-          <div className="flex items-center gap-2 mb-2">
-            {isCorrect ? (
-              <CheckCircle className="text-green-600" size={20} />
-            ) : (
-              <XCircle className="text-red-600" size={20} />
-            )}
-            <span className={`font-semibold ${isCorrect ? 'text-green-800' : 'text-red-800'}`}>
-              {isCorrect ? 'Correct!' : 'Incorrect'}
+        {/* Progress Bar */}
+        <div className="progress-card">
+          <div className="progress-info">
+            <span className="progress-label">
+              Întrebarea {currentQuestionIndex + 1} din {randomizedQuestions.length}
+            </span>
+            <span className="progress-percent">
+              {Math.round(((currentQuestionIndex + 1) / randomizedQuestions.length) * 100)}% Completat
             </span>
           </div>
-          {!isCorrect && (
-            <p className="text-red-700">
-              <strong>Correct answer(s):</strong> {correctAnswer.map(ans => ans.toUpperCase()).join(', ')}
-            </p>
-          )}
+          <div className="progress-bar">
+            <div 
+              className="progress-fill"
+              style={{ width: `${((currentQuestionIndex + 1) / randomizedQuestions.length) * 100}%` }}
+            ></div>
+          </div>
         </div>
-      )}
 
-      {/* Navigation */}
-      <div className="flex justify-between items-center">
-        <button
-          onClick={previousQuestion}
-          disabled={currentQuestionIndex === 0}
-          className={`px-4 py-2 rounded-lg transition-colors ${
-            currentQuestionIndex === 0
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-gray-600 text-white hover:bg-gray-700'
-          }`}
-        >
-          Întrebarea precedenta ( Înapoi )
-        </button>
+        {/* Question Section */}
+        <div className="question-card">
+          <h2 className="question-text">
+            {currentQuestion.question}
+          </h2>
 
-        <div className="flex gap-2">
-          {!showResult && userAnswer.length > 0 && (
+          {/* Options */}
+          <div className="options-container">
+            {Object.entries(currentQuestion.options).map(([key, value]) => {
+              const isSelected = userAnswer.includes(key);
+              const isCorrectOption = correctAnswer.includes(key);
+              
+              let optionClass = "option ";
+              
+              if (showResult) {
+                if (isCorrectOption) {
+                  optionClass += "option-correct";
+                } else if (isSelected && !isCorrectOption) {
+                  optionClass += "option-incorrect";
+                } else {
+                  optionClass += "option-neutral";
+                }
+              } else {
+                if (isSelected) {
+                  optionClass += "option-selected";
+                } else {
+                  optionClass += "option-default";
+                }
+              }
+
+              return (
+                <div
+                  key={key}
+                  className={optionClass}
+                  onClick={() => !showResult && handleAnswerToggle(key)}
+                >
+                  <div className="option-content">
+                    {/* Custom Checkbox */}
+                    <div className={`option-checkbox ${isSelected || (showResult && isCorrectOption) ? 'checkbox-checked' : 'checkbox-unchecked'}`}>
+                      {(isSelected && !showResult) && <Check size={14} />}
+                      {showResult && isCorrectOption && <Check size={14} />}
+                      {showResult && isSelected && !isCorrectOption && <Check size={14} />}
+                    </div>
+                    
+                    {/* Option Label */}
+                    <span className="option-label">
+                      {key.toUpperCase()})
+                    </span>
+                    
+                    {/* Option Text */}
+                    <span className="option-text">
+                      {value}
+                    </span>
+                    
+                    {/* Result Icons */}
+                    {showResult && (
+                      <div className="option-icon">
+                        {isCorrectOption && (
+                          <CheckCircle size={24} className="icon-correct" />
+                        )}
+                        {isSelected && !isCorrectOption && (
+                          <XCircle size={24} className="icon-incorrect" />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Selection Indicator */}
+                  {isSelected && !showResult && (
+                    <div className="selection-indicator">
+                      <div className="indicator-dot"></div>
+                    </div>
+                  )}
+                  
+                  {/* Enhanced border for selected items */}
+                  {isSelected && !showResult && (
+                    <div className="selection-border"></div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Result Display */}
+        {showResult && (
+          <div className={`result-card ${isCorrect ? 'result-correct' : 'result-incorrect'}`}>
+            <div className="result-header">
+              {isCorrect ? (
+                <CheckCircle className="result-icon icon-correct" size={32} />
+              ) : (
+                <XCircle className="result-icon icon-incorrect" size={32} />
+              )}
+              <span className="result-title">
+                {isCorrect ? 'Corect! 🎉' : 'Incorect ❌'}
+              </span>
+            </div>
+            {!isCorrect && (
+              <div className="result-details">
+                <p className="result-text">
+                  <span className="result-label">Răspuns(uri) corect(e):</span>{' '}
+                  <span className="result-answer">
+                    {correctAnswer.map(ans => ans.toUpperCase()).join(', ')}
+                  </span>
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Navigation */}
+        <div className="navigation-card">
+          <div className="navigation-content">
             <button
-              onClick={checkAnswer}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              onClick={previousQuestion}
+              disabled={currentQuestionIndex === 0}
+              className={`btn-nav ${currentQuestionIndex === 0 ? 'btn-disabled' : ''}`}
             >
-              Verifică Răspuns ( Răspunde )
+              ← Întrebarea precedentă
             </button>
-          )}
+
+            <div className="nav-center">
+              {!showResult && userAnswer.length > 0 && (
+                <button
+                  onClick={checkAnswer}
+                  className="btn-check"
+                >
+                  Verifică Răspuns
+                </button>
+              )}
+            </div>
+
+            <button
+              onClick={nextQuestion}
+              disabled={currentQuestionIndex === randomizedQuestions.length - 1}
+              className={`btn-nav ${currentQuestionIndex === randomizedQuestions.length - 1 ? 'btn-disabled' : ''}`}
+            >
+              Următoarea întrebare →
+            </button>
+          </div>
         </div>
 
-        <button
-          onClick={nextQuestion}
-          disabled={currentQuestionIndex === randomizedQuestions.length - 1}
-          className={`px-4 py-2 rounded-lg transition-colors ${
-            currentQuestionIndex === randomizedQuestions.length - 1
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-gray-600 text-white hover:bg-gray-700'
-          }`}
-        >
-          Următoarea întrebare
-        </button>
+        {/* Final Score */}
+        {currentQuestionIndex === randomizedQuestions.length - 1 && showResult && (
+          <div className="final-score">
+            <h3 className="final-title">🎯 Progresul Testului</h3>
+            <div className="final-content">
+              <p className="final-text">
+                Ai răspuns la <span className="highlight">{totalAnswered}</span> întrebări
+              </p>
+              <p className="final-score-text">
+                Scor: <span className="highlight">{score}/{totalAnswered}</span>
+                <span className="final-percentage">
+                  ({totalAnswered > 0 ? Math.round((score / totalAnswered) * 100) : 0}%)
+                </span>
+              </p>
+            </div>
+          </div>
+        )}
       </div>
-
-      {/* Final Score */}
-      {currentQuestionIndex === randomizedQuestions.length - 1 && showResult && (
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-center">
-          <h3 className="text-lg font-semibold text-blue-800 mb-2">Progres-ul testului</h3>
-          <p className="text-blue-700">
-            Ai răspuns la {totalAnswered} întrebări cu un scor de {score}/{totalAnswered} 
-            ({totalAnswered > 0 ? Math.round((score / totalAnswered) * 100) : 0}%)
-          </p>
-        </div>
-      )}
     </div>
   );
 }
